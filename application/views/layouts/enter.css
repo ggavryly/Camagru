@@ -1,0 +1,154 @@
+/*----------enter_form----------*/
+.enter-form{
+    position: absolute;
+    top: 20%;
+    left: 37%;
+    max-width: 500px;
+    background: #f4f7f8;
+    margin: 10px auto;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+.enter-form fieldset{
+    border: none;
+}
+.enter-form legend {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+.enter-form label {
+    display: block;
+    margin-bottom: 8px;
+}
+.enter-form input[type="text"],
+.enter-form select {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    outline: 0;
+    padding: 10px;
+    width: 97%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    background-color: #e8eeef;
+    color:#8a97a0;
+    margin-bottom: 30px;
+}
+.enter-form input[type="password"]
+{
+    font-family: Georgia, "Times New Roman", Times, serif;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    outline: 0;
+    padding: 10px;
+    width: 75%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    background-color: #e8eeef;
+    color:#8a97a0;
+    -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+    margin-bottom: 30px;
+
+}
+.enter-form .number {
+    background: #FFEFBA;
+    color: #fff;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    font-size: 0.8em;
+    margin-right: 4px;
+    line-height: 30px;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+    border-radius: 15px 15px 15px 0;
+}
+
+.enter-form input[type="submit"],
+.enter-form input[id="button"]
+{
+    position: relative;
+    display: block;
+    padding: 19px 39px 18px 39px;
+    color: #FFF;
+    background: #FFEFBA;
+    font-size: 18px;
+    text-align: center;
+    font-style: normal;
+    width: 100%;
+    border-width: 1px 1px 1px 1px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.enter-form input[id="button1"]
+{
+    position: static;
+    display: inline-block;
+    color: #FFF;
+    background: #FFEFBA;
+    font-size: 15px;
+    text-align: center;
+    font-style: normal;
+    width: 20%;
+    height: 35px;
+    margin: 10px;
+    border-width: 1px 1px 1px 1px;
+    border-radius: 4px;
+}
+.enter-form input[type="submit"]:hover,
+.enter-form input[type="button"]:hover
+{
+    background: #FFEFAA;
+}
+
+/*----------header----------*/
+.header{
+    width: 100%;
+    height: 10%;
+    display: block;
+    background: linear-gradient(to bottom, #FFEFBA, #FFFFFF);
+}
+.inner-header{
+    width: 60%;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+/*----------footer----------*/
+.social{
+    color: white;
+}
+#github_logo{
+    max-height: 50px;
+    max-width: 50px;
+}
+#instagram_logo{
+    max-height: 50px;
+    max-width: 50px;
+}
+#intra_logo{
+    max-height: 50px;
+    max-width: 50px;
+}
+#camagru_logo{
+
+}
+.footer
+{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    background: linear-gradient(to top, #FFEFBA, #FFFFFF);
+}
+.footer ul li {
+    display: inline-block;
+    padding-left: 20px;
+}
