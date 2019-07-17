@@ -1,0 +1,1 @@
+ajax("../core/current-data.php","post", alert, );

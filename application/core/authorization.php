@@ -1,15 +1,20 @@
 <?php
-include_once ("../controllers/AccountController.class.php");
-
+require_once ("../config/include.php");
 $AH = new AccountController();
-$AH->authorization($_POST['login'], hash('whirlpool' ,$_POST['pass']));
-if ($AH->__get_user_log() == 1)
+$result = $AH->authorization($_POST['name'], hash('whirlpool' ,$_POST['pass']));
+if ($result == 1)
 {
 	session_start();
 	$_SESSION['login'] = $AH->__get_user_name();
 	$_SESSION['log'] = 1;
-	print_r($_SESSION);
-	header("Location: ../../enter.php");
+	header('Content-Type: application/json');
+	echo json_encode(1);
 }
-
-?>
+else if ($result == 2)
+{
+	echo json_encode(2);
+}
+else
+{
+	echo json_encode(0);
+}

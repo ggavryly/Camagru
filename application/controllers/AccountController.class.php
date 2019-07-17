@@ -20,7 +20,6 @@ Class AccountController
 	public function __construct()
 	{
 		$this->DBH = new DatabaseController();
-		echo "Hello AC<br>";
 	}
 	public function new_password($old_pass ,$new_pass, $login)
 	{
@@ -38,28 +37,55 @@ Class AccountController
 			echo "ERROR";
 		}
 	}
+	public function update_password($new_pass, $id_user)
+	{
+		$PP = $this->DBH->__get_pdo()->prepare("UPDATE users SET password = :pass WHERE id_user = :id_user");
+		$PP->setFetchMode(PDO::FETCH_ASSOC);
+		$PP->execute(array(':pass' => $new_pass  ,':id_user' => $id_user));
+	}
 	public function authorization($login, $pass)
 	{
-		$result = $this->DBH->__get_pdo()->prepare("SELECT id_user , login, password FROM users WHERE login = :login AND password = :pass");
+        $result = $this->DBH->__get_pdo()->prepare("SELECT id_user , login, password, verif_e FROM users WHERE login = :login AND password = :pass");
 		$result->setFetchMode(PDO::FETCH_ASSOC);
 		$result->execute(array(":login" => $login, ":pass" => $pass));
 		$check = $result->fetch();
-		if (isset($check['id_user']))
+		if (isset($check['id_user']) && $check['verif_e'] == 1)
 		{
 			$this->user_id = $check['id_user'];
 			$this->user_name = $check['login'];
 			$this->user_log = 1;
-			return (200);
+			return (1);
+		}
+		else if ($check['verif_e'] == 0)
+		{
+			return (2);
 		}
 		else
-			return (404);
+			return (0);
 	}
-	public function validate_email()
+	public function validate_email($id)
 	{
-
+        $result = $this->DBH->__get_pdo()->prepare("UPDATE users SET verif_e = 1 WHERE id_user = :id_user");
+        $result->setFetchMode(PDO::FETCH_ASSOC);
+        $result->execute(array(":id_user" => $id));
+	}
+	public function encrypt_id($encrypt)
+	{
+		$result = $this->DBH->__get_pdo()->prepare("SELECT id_user FROM users WHERE MD5(66 * 6 + id_user)=:encrypt");
+		$result->setFetchMode(PDO::FETCH_ASSOC);
+		$result->execute(array(":encrypt" => $encrypt));
+		$check = $result->fetch();
+		return ($check['id_user']);
+	}
+	public function load_images()
+	{
+		$request = $this->DBH->__get_pdo()->prepare("SELECT id_user, post FROM posts");
+		$request->setFetchMode(PDO::FETCH_ASSOC);
+		$request->execute();
+		$images = $request->fetch();
+		return ($images);
 	}
 	public function __destruct()
 	{
-		echo "BYE-AC<br>";
 	}
 }

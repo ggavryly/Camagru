@@ -1,5 +1,5 @@
 <?php
-include ("../controllers/DatabaseContoller.class.php");
+require_once ("../config/include.php");
 
 $DB_DSN = 'mysql:host=localhost';
 $DB_USER = 'root';

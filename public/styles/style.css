@@ -3,6 +3,7 @@
     padding: 0;
     list-style: none;
     text-decoration: none;
+    font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
 }
 html, body {
     height: 100%;
@@ -10,7 +11,7 @@ html, body {
 /*----------header----------*/
 .header{
     width: 100%;
-    height: 10%;
+    height: 160px;
     display: block;
     background: linear-gradient(to bottom, #FFEFBA, #FFFFFF);
 }
@@ -20,24 +21,30 @@ html, body {
     display: block;
     margin: 0 auto;
 }
+.head_ic {
+    margin: 50px;
+    margin-top: 80px;
+    position: absolute;
+    right: 0;
+    height: 50px;
+    width: 120px;
+    display: inline-block;
+}
+#profile , #logout {
+    max-height: 50px;
+    max-width: 50px;
+}
 /*----------footer----------*/
 .social{
     color: white;
 }
-#github_logo{
-    max-height: 50px;
-    max-width: 50px;
-}
-#instagram_logo{
-    max-height: 50px;
-    max-width: 50px;
-}
-#intra_logo{
+#github_logo , #instagram_logo , #intra_logo {
     max-height: 50px;
     max-width: 50px;
 }
 #camagru_logo{
-
+    height: 150px;
+    width: 250px;
 }
 .footer
 {

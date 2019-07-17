@@ -1,0 +1,31 @@
+.enter-form .number {
+    margin-top: 15px;
+    background: #FFEFBA;
+    color: #fff;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    font-size: 0.8em;
+    margin-right: 4px;
+    line-height: 30px;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+    border-radius: 15px 15px 15px 0;
+}
+.enter-form legend {
+     font-size: 1.4em;
+     margin-bottom: 10px;
+ }
+.enter-form
+{
+    float: left;
+    top: 20%;
+    left: 37%;
+    max-width: 500px;
+    height: 200px;
+    background: #f4f7f8;
+    margin: 10px auto;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}

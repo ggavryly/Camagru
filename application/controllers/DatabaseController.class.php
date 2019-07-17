@@ -1,5 +1,5 @@
 <?php
-require_once ("../config/database.php");
+include_once ("../config/database.php");
 
 Class DatabaseController
 {
@@ -16,9 +16,15 @@ Class DatabaseController
 	}
 	public function __construct()
     {
-         self::$pdo = new PDO(DB_DSN, DB_USER, DB_PASSWORD);
-         self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-         echo "Hello DC<br>";
+    	try {
+    		self::$pdo = new PDO(DB_DSN, DB_USER, DB_PASSWORD);
+    	}
+    	catch (PDOException $e)
+		{
+			echo "<br>".$e->getMessage()."<br>";
+			die();
+		}
+    	self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     public function search_user($login)
 	{
@@ -33,6 +39,7 @@ Class DatabaseController
 	}
 	public function get_id_user($dt, $mode)
 	{
+	    $result = NULL;
 		if ($mode === "login") {
 			$result = self::$pdo->prepare("SELECT id_user FROM users WHERE login = :dt");
 		}
@@ -50,7 +57,40 @@ Class DatabaseController
 		{
 			echo "ERROR NO FOUND USER";
 		}
+		return (0);
 	}
+	public function get_user_data($login)
+	{
+		$result = self::$pdo->prepare("SELECT login,password,email FROM users WHERE login = :login");
+		$result->setFetchMode(PDO::FETCH_ASSOC);
+		$result->execute(array(":login" => $login));
+		$check = $result->fetch();
+		print_r($check);
+	}
+	public function get_login($dt, $mode)
+    {
+        $result = NULL;
+        if ($mode === "id")
+        {
+            $result = self::$pdo->prepare("SELECT login FROM users WHERE id_user = :dt");
+        }
+        else if ($mode === "email")
+        {
+            $result = self::$pdo->prepare("SELECT login FROM users WHERE email = :dt");
+        }
+        $result->setFetchMode(PDO::FETCH_ASSOC);
+        $result->execute(array(":dt" => $dt));
+        $check = $result->fetch();
+        if (isset($check['login']))
+        {
+            return ($check['login']);
+        }
+        else
+        {
+            echo "ERROR NO FOUND LOGIN";
+        }
+        return (0);
+    }
 	public function search_email($email)
 	{
 		$result = self::$pdo->prepare("SELECT email FROM users WHERE email = :email");
@@ -62,8 +102,11 @@ Class DatabaseController
 		else
 			return (0);
 	}
-    public function new_post($user, $info)
+    public function new_post($user, $post)
 	{
+		$request = self::$pdo->prepare("INSERT INTO posts (id_user,post) VALUES (:id_user, :post)");
+		$request->setFetchMode(PDO::FETCH_ASSOC);
+		$request->execute(array(":id_user" => $user, ":post" => $post));
 	}
 	public function new_comment($user, $info, $post)
 	{
@@ -78,7 +121,15 @@ Class DatabaseController
 		$prepare_user = self::$pdo->prepare("INSERT INTO users (login, password, email) VALUES (:login, :password, :email)");
 		if (!$this->search_user($user) && !$this->search_email($email))
 		{
-			$prepare_user->execute(array(":login" => $user, ":password" => $password, ":email" => $email));
+		    try {
+                $prepare_user->execute(array(":login" => $user, ":password" => $password, ":email" => $email));
+            }
+            catch (Exception $e)
+            {
+                print "<br>".$e->getMessage()."<br>";
+                return (0);
+            }
+            return (1);
 		}
 	}
 	public function like($post)
@@ -89,8 +140,7 @@ Class DatabaseController
 	}
 	public function __destruct()
 	{
-		echo "<br>BYE-DC";
+		self::$pdo = NULL;
 	}
 }
 
-?>
