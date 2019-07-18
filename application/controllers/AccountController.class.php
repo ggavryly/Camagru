@@ -39,10 +39,28 @@ Class AccountController
 	}
 	public function update_password($new_pass, $id_user)
 	{
-		$PP = $this->DBH->__get_pdo()->prepare("UPDATE users SET password = :pass WHERE id_user = :id_user");
-		$PP->setFetchMode(PDO::FETCH_ASSOC);
-		$PP->execute(array(':pass' => $new_pass  ,':id_user' => $id_user));
+	    $PP = $this->DBH->__get_pdo()->prepare("UPDATE users SET password = :pass WHERE id_user = :id_user");
+	    $PP->setFetchMode(PDO::FETCH_ASSOC);
+	    $PP->execute(array(':pass' => $new_pass, ':id_user' => $id_user));
 	}
+    public function new_login($new_login, $id_user)
+    {
+        if (!$this->DBH->search_user($new_login))
+        {
+            $PP = $this->DBH->__get_pdo()->prepare("UPDATE users SET login = :login WHERE id_user = :id_user");
+            $PP->setFetchMode(PDO::FETCH_ASSOC);
+            $PP->execute(array(':login' => $new_login  ,':id_user' => $id_user));
+        }
+    }
+    public function new_email($new_email, $id_user)
+    {
+        if (!$this->DBH->search_email($new_email))
+        {
+            $PP = $this->DBH->__get_pdo()->prepare("UPDATE users SET email = :email WHERE id_user = :id_user");
+            $PP->setFetchMode(PDO::FETCH_ASSOC);
+            $PP->execute(array(':email' => $new_email, ':id_user' => $id_user));
+        }
+    }
 	public function authorization($login, $pass)
 	{
         $result = $this->DBH->__get_pdo()->prepare("SELECT id_user , login, password, verif_e FROM users WHERE login = :login AND password = :pass");

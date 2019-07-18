@@ -1,4 +1,13 @@
-let video, canvas, context, imgCheck, meme;
+let video, canvas, context, imgCheck, overlay;
+
+overlay =  {
+	"batyka" : 		0,
+	"doge" : 		0,
+	"pepe" : 		0,
+	"thug-life" : 	0,
+	"ukraine" : 	0,
+	"number" : 		0
+};
 
 
 imgCheck = 0;
@@ -51,6 +60,15 @@ function modeChange() {
 	}
 }
 
+function requestData(dataArr) {
+	let i = "";
+	for (let key in dataArr)
+	{
+		i += `${key}=${dataArr[key]}&`;
+	}
+	return i;
+}
+
 function makePicture() {
 	let picture;
 	if (!document.querySelector("#checkbox").checked && navigator.mediaDevices && navigator.mediaDevices.getUserMedia )
@@ -95,19 +113,19 @@ function selectPicture() {
 	}
 }
 
-function movePicture() {
-
-}
-
 function editPicture() {
-	let select, meme;
-	// if (imgCheck && document.querySelector("#checkbox").checked)
-	// {
+	let select, meme, edit;
+	select = document.querySelector(".option");
+	if (imgCheck && document.querySelector("#checkbox").checked && !overlay[select.options[select.selectedIndex].value]) {
+		edit = document.querySelector("#upload_image");
 		meme = document.createElement("img");
-		meme.src = "../public/images/" + select.options[select.selectedIndex].value + ".png";
-		document.querySelector("");
-		select = document.querySelector(".option");
-	// }
+		meme.classList.add(select.options[select.selectedIndex].value);
+		meme.src = "../../../public/images/" + select.options[select.selectedIndex].value + ".png";
+		edit.appendChild(meme);
+		overlay["number"]++;
+		overlay[select.options[select.selectedIndex].value] = 1;
+		console.log(overlay);
+	}
 	return true;
 }
 
@@ -126,7 +144,7 @@ function uploadPhoto() {
 	xhttp = new XMLHttpRequest();
 	xhttp.open("post", "../../core/new-post.php", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("img=" + image.src);
+	xhttp.send("img=" + image.src + "&" + requestData(overlay));
 	xhttp.onload = function () {
 
 	}

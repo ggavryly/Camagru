@@ -61,11 +61,11 @@ Class DatabaseController
 	}
 	public function get_user_data($login)
 	{
-		$result = self::$pdo->prepare("SELECT login,password,email FROM users WHERE login = :login");
+		$result = self::$pdo->prepare("SELECT login, email FROM users WHERE login = :login");
 		$result->setFetchMode(PDO::FETCH_ASSOC);
 		$result->execute(array(":login" => $login));
 		$check = $result->fetch();
-		print_r($check);
+		return ($check);
 	}
 	public function get_login($dt, $mode)
     {
@@ -88,6 +88,30 @@ Class DatabaseController
         else
         {
             echo "ERROR NO FOUND LOGIN";
+        }
+        return (0);
+    }
+    public function get_email($dt, $mode)
+    {
+        $result = NULL;
+        if ($mode === "id")
+        {
+            $result = self::$pdo->prepare("SELECT email FROM users WHERE id_user = :dt");
+        }
+        else if ($mode === "login")
+        {
+            $result = self::$pdo->prepare("SELECT email FROM users WHERE login = :dt");
+        }
+        $result->setFetchMode(PDO::FETCH_ASSOC);
+        $result->execute(array(":dt" => $dt));
+        $check = $result->fetch();
+        if (isset($check['email']))
+        {
+            return ($check['email']);
+        }
+        else
+        {
+            echo "ERROR NO FOUND EMAIL";
         }
         return (0);
     }

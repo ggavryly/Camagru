@@ -67,6 +67,7 @@ label:after {
 	background: #f4f7f8;
 	border-radius: 8px;
 	display: inline-block;
+	position: relative;
 }
 
 .picture {
@@ -144,6 +145,48 @@ label:after {
 	background: #FFEFBA;
 }
 
-.meme {
-
+#upload_image {
+	position: relative;
 }
+.batyka {
+	width : 200px;
+	height : 200px;
+	position : absolute;
+	z-index : 1000;
+	top: 0;
+	left: 70%;
+}
+.doge {
+	width : 200px;
+	height : 200px;
+	position : absolute;
+	z-index : 1000;
+	top: 70%;
+	left: 70%;
+}
+.pepe {
+	width : 200px;
+	height : 200px;
+	position : absolute;
+	z-index : 1000;
+	top: 60%;
+	left: 10%;
+}
+.thug-life {
+	width : 200px;
+	height : 200px;
+	position : absolute;
+	z-index : 1000;
+	top: 40%;
+	left: 40%;
+}
+.ukraine {
+	width : 200px;
+	height : 200px;
+	position : absolute;
+	z-index : 1000;
+	top: 0;
+	left: 10%;
+}
+
+

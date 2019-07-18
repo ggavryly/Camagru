@@ -1,6 +1,69 @@
 <?php
 include_once ("../config/include.php");
 session_start();
+
+function maino($overlay, $out , $w, $h)
+{
+    if ($overlay["batyka"])
+    {
+        $out = batyka($out,$w, $h);
+    }
+//    if ($overlay["doge"])
+//    {
+//        $out =  doge($out,$w, $h);
+//    }
+//    if ($overlay["pepe"])
+//    {
+//        $out =  pepe($out, $w, $h);
+//    }
+//    if ($overlay["thug-life"])
+//    {
+//        $out =  thuglife($out, $w, $h);
+//    }
+//    if ($overlay["ukraine"])
+//    {
+//        $out =  ukraine($out, $w, $h);
+//    }
+    return ($out);
+}
+
+function batyka($out, $w, $h)
+{
+    $img = imagecreatefrompng("../../public/images/batyka.png");
+    imagecopy($out, $img, imagesx($out) - imagesx($img) - 600, imagesy($out) - imagesy($img) - 300, 0, 0, 200, 200);
+    header('Content-type: image/png');
+    imagepng($out, "../views/posts/" . $_SESSION["login"] ."_" . uniqid() . ".jpg");
+    return ($out);
+}
+
+function doge($out, $w, $h)
+{
+    $img = imagecreatefrompng("../../public/images/doge.png");
+    imagecopy($out, $img, 600, 100, 0, 0, 800, 600, 320, 240);
+    return ($out);
+}
+
+function pepe($out, $w, $h)
+{
+    $img = imagecreatefrompng("../../public/images/pepe.png");
+    imagecopy($out, $img, 100, 400, 0, 0, 800, 600, 750, 730);
+    return ($out);
+}
+
+function thuglife($out, $w, $h)
+{
+    $img = imagecreatefrompng("../../public/images/thug-life.png");
+    imagecopyresampled($out, $img, 400, 300, 0, 0, 800, 600, 1920, 1080);
+    return ($out);
+}
+
+function ukraine ($out, $w, $h)
+{
+    $img = imagecreatefrompng("../../public/images/ukraine.png");
+    imagecopy($out, $img, 100, 100, 0, 0, 800, 600, 425, 425);
+    return ($out);
+}
+
 if (isset($_SESSION["log"]) && isset($_POST['img']))
 {
 	$src_img = $_POST['img'];
@@ -14,7 +77,7 @@ if (isset($_SESSION["log"]) && isset($_POST['img']))
 	list($width, $height) = getimagesizefromstring($src_data);
 	$out = imagecreatetruecolor($width, $height);
 	imagecopyresampled($out, $js_img, 0, 0, 0, 0, $width, $height, $width, $height);
-	imagejpeg($out, $img_name, 100);
+	imagejpeg(maino($_POST, $out, $width, $height) , $img_name, 100);
 	$DH->new_post($DH->get_id_user($_SESSION['login'], "login"), $_SESSION['login']."_".$unique_id.".jpg");
 	echo json_encode(1);
 }

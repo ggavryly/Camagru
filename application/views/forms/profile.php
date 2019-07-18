@@ -17,19 +17,18 @@
     </div>
 </section>
 <body>
-<div class="enter-form">
-    <form action="" method="POST">
-        <legend>My options</legend>
-        <span class="number">1</span>
-        <a>Your current Login:</a><input type="button" name="login" value="Change Login">
-        <br>
-        <span class="number">2</span>
-        <a>Your current Email:</a><input type="button" name="email" value="Change Email">
-        <br>
-        <span class="number">3</span>
-        <input type="button" name="pass" value="Change Pass">
-    </form>
-</div>
+    <div class="main">
+        <div class="text_options">
+            <p style="font-size: 2vm;">|My options|</p>
+        </div>
+        <div class="options">
+            <button class="child" onclick="editLogin()">Edit login</button>
+            <button class="child" onclick="editPass()">Edit pass</button>
+            <button class="child" onclick="editEmail()">Edit email</button>
+            <div id="cur_log" class="current">Your current login:</div>
+            <div id="cur_em" class="current">Your current email:</div>
+        </div>
+    </div>
 <footer>
     <div class="footer">
         <ul>
@@ -42,5 +41,13 @@
         </ul>
     </div>
 </footer>
+<?php
+session_start();
+    if (!isset($_SESSION["log"]))
+    {
+        header("Location: enter.php");
+    }
+?>
+<script src="../../models/profile.js"></script>
 </body>
 </html>
