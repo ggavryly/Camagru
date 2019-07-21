@@ -74,7 +74,7 @@ Class AccountController
 			$this->user_log = 1;
 			return (1);
 		}
-		else if ($check['verif_e'] == 0)
+		else if (isset($check['id_user']) && $check['verif_e'] == 0)
 		{
 			return (2);
 		}

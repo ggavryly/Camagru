@@ -9,5 +9,5 @@ if ($_SESSION["log"] == 1)
 }
 else
 {
-	header("Location: ../views/forms/enter.php");
+	header("Location: ../views/forms/login.php");
 }

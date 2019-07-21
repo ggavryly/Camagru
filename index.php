@@ -7,5 +7,5 @@ if ($_SESSION['log'] == "1")
 }
 else
 {
-	header("Location: application/views/forms/enter.php");
+	header("Location: application/views/forms/login.php");
 }

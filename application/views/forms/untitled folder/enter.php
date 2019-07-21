@@ -2,8 +2,9 @@
 <html lang="ru">
 <head>
 	<title>Enter</title>
-	<link rel="stylesheet" type="text/css" href="../../../public/styles/style.css">
-	<link rel="stylesheet" type="text/css" href="../../../public/styles/enter.css">
+<!--	<link rel="stylesheet" type="text/css" href="../../../public/styles/style.css">-->
+<!--	<link rel="stylesheet" type="text/css" href="../../../public/styles/enter.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
 </head>
 <body>
 <section>
@@ -70,13 +71,27 @@
 		</ul>
 	</div>
 </footer>
-<?php
-	session_start();
-	if (isset($_SESSION['log']))
-	{
-		header("Location: photo-list.php");
-	}
-?>
+<section class="hero is-dark bold">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Camagru
+            </h1>
+            <h2 class="subtitle">
+                Your kaka project
+            </h2>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+            is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+        </p>
+    </div>
+</footer>
 <script type="text/javascript" src="../../models/enter.js"></script>
 </body>
 </html>

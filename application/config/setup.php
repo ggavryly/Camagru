@@ -14,4 +14,4 @@ try {
 	 echo 'Connection failed: ' . $e->getMessage();
 }
 //
-//header("Location: ../../enter.php");
+//header("Location: ../../login.php");

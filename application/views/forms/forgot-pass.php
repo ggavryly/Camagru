@@ -5,7 +5,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Camagru</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
-	<link rel="stylesheet" href="../../../public/styles/photo-list.css">
 	<script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
 </head>
 <body>
@@ -21,11 +20,10 @@
             	</span>
 			</div>
 			<div id="navMenu" class="navbar-menu">
-				<div class="navbar-end">
+				<div id="navbar-menu" class="navbar-end">
 					<a class="navbar-item" href="../../../index.php">Home</a>
-					<a class="navbar-item" href="profile.php">Profile</a>
-					<a class="navbar-item" href="photo-booth.php">Photo-booth</a>
-					<a class="navbar-item" href="../../core/logout.php">Log out</a>
+					<a class="navbar-item" href="login.php">Sign-in</a>
+					<a class="navbar-item" href="sign-up.php">Sign-up</a>
 				</div>
 			</div>
 		</div>
@@ -33,25 +31,27 @@
 	<div class="hero-body">
 		<div class="container">
 			<div class="columns is-5-tablet is-4-desktop is-3-widescreen">
-				<div class="column is-two-thirds">
-					<div id="list" class="box" style="max-height: 700px; overflow-y: scroll">
-						<div class="box" style="">
-							<h5 class="title is-5" style="color:black">Title 5</h5>
-							<figure class="image is-1by1">
-								<img src="https://bulma.io/images/placeholders/256x256.png">
-							</figure>
-							<button class="button is-info">Comment</button>
-							<span class="icon" style="float:right">
-  								<i class="far fa-heart"></i>
-							</span>
+				<div class="column">
+					<div id="no-email" class="notification is-warning" style="display: none; width: 200px">
+						There no user with such email<button  onclick="hideNotification('no-email')" class="delete"></button>
+					</div>
+					<div id="success-email" class="notification is-success" style="display: none; width: 200px">
+						A recovery letter has come to your mail<button  onclick="hideNotification('success-email')" class="delete"></button>
+					</div>
+					<form class="box" onsubmit="return false">
+						<div class="field">
+							<label class="label">Forgot password</label>
+							<div class="control has-icons-left">
+								<input id="forgot-email" type="email" class="input" placeholder="Your Email" required>
+								<span class="icon is-small is-left">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="column is-one-third">
-					<div class="box" style="display:;max-height: 500px; overflow-y: scroll">
-						<textarea id="comment" class="textarea" placeholder="Add comment"></textarea>
-						<button id="submit-comment" class="button is-info">Submit</button>
-					</div>
+						<div class="field">
+							<button class="button is-success" onclick="resetPassword()">Sent</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -65,13 +65,6 @@
         nav.classList.toggle("is-active");
     })
 </script>
-<?php
-session_start();
-if (!isset($_SESSION["log"]))
-{
-	header("Location: login.php");
-}
-?>
-<script src="../../models/photo-list.js"></script>
+<script src="../../models/enter.js"></script>
 </body>
 </html>

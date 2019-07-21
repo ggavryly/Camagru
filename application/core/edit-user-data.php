@@ -18,5 +18,4 @@ if (isset($_SESSION))
     {
         $AH->new_email($_POST["email"] ,$DH->get_id_user($_SESSION["login"],"login"));
     }
-    print_r($_POST);
 }

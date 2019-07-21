@@ -6,12 +6,10 @@ overlay =  {
 	"pepe" : 		0,
 	"thug-life" : 	0,
 	"ukraine" : 	0,
-	"number" : 		0
 };
 
-
 imgCheck = 0;
-video = document.querySelector(".Left_video");
+video = document.querySelector("#video");
 button = document.querySelector(".Button_camera");
 navigator.getMedia = ( navigator.getUserMedia ||
 	navigator.webkitGetUserMedia ||
@@ -35,31 +33,6 @@ navigator.getMedia(
 		console.log("error");
 	});
 
-function modeChange() {
-	let camera, button, edit;
-	camera = document.querySelector(".Left_video");
-	button = document.querySelector(".Button_camera");
-	edit = document.querySelector(".Left_edit");
-	if (document.querySelector("#checkbox").checked)
-	{
-		document.querySelector(".camera").removeChild(button);
-		camera.classList.add("hide");
-		edit.classList.remove("hide");
-		button = document.createElement("button");
-		button.classList.add("Button_camera");
-		button.innerHTML = "Upload photo";
-		button.onclick = uploadPhoto;
-		document.querySelector(".camera").appendChild(button);
-	}
-	else
-	{
-		edit.classList.add("hide");
-		camera.classList.remove("hide");
-		button.innerHTML = "Snap photo";
-		button.onclick = makePicture;
-	}
-}
-
 function requestData(dataArr) {
 	let i = "";
 	for (let key in dataArr)
@@ -69,17 +42,57 @@ function requestData(dataArr) {
 	return i;
 }
 
+function getOverlay(overlay, picture,context ,width, height) {
+	for (let key in overlay)
+	{
+		if (overlay[key])
+		{
+			let image = new Image(64,64);
+			image.src = "../../../public/images/" + key + ".png";
+			image.value = key;
+			image.onload = function (){
+				if (this.value === "batyka")
+				{
+					context.drawImage(image, 0, 0, width * 2, height * 2, width / 1.5, height / 1.5, width, height);
+				}
+				else if (this.value === "doge")
+				{
+					context.drawImage(image, 0, 0, width * 3, height * 3, width / 1.5, height / 6, width, height);
+				}
+				else if (this.value === "pepe")
+				{
+					context.drawImage(image, 0, 0, width * 6, height * 6, width / 6, height / 6, width, height);
+				}
+				else if (this.value === "thug-life")
+				{
+					context.drawImage(image, 0, 0, width * 8, height * 8, width / 4, height / 3.5, width, height);
+				}
+				else if (this.value === "ukraine")
+				{
+					context.drawImage(image, 0, 0, width * 3, height * 3, width / 6, height / 1.75, width, height);
+				}
+				document.querySelector("#photo").src = convertCanvasToImage(picture, width, height).src;
+			};
+		}
+		document.querySelector("#photo").src = convertCanvasToImage(picture, width, height).src;
+	}
+}
+
 function makePicture() {
-	let picture;
-	if (!document.querySelector("#checkbox").checked && navigator.mediaDevices && navigator.mediaDevices.getUserMedia )
+	let picture, width, height;
+	width = document.querySelector("#video").getBoundingClientRect().width;
+	height = document.querySelector("#video").getBoundingClientRect().height;
+	if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
 	{
 		picture = document.createElement("canvas");
-		picture.classList.add("picture");
+		picture.width = width;
+		picture.height = height;
 		picture.onclick = selectPicture;
-		document.querySelector(".photos").appendChild(picture);
 		context = picture.getContext("2d");
-		video = document.querySelector(".Left_video");
-		context.drawImage(video ,0,0,800,620,0,0,377,250);
+		video = document.querySelector("#video");
+		context.drawImage(video ,0,0,width,height);
+		getOverlay(overlay, picture, context, width, height);
+		imgCheck = 1;
 	}
 	else
 	{
@@ -87,65 +100,58 @@ function makePicture() {
 	}
 }
 
-function convertImageToCanvas(image) {
-	let canvas = document.createElement("canvas");
-	canvas.width = 800 + "px";
-	canvas.height = 620 + "px";
-	canvas.getContext("2d").drawImage(image, 0, 0);
-
-	return canvas;
-}
-
-function convertCanvasToImage(canvas) {
-	let image = new Image(800,600);
+function convertCanvasToImage(canvas, w, h) {
+	let image = new Image(w,h);
 	image.src = canvas.toDataURL("image/png");
 	return image;
 }
 
 function selectPicture() {
-	let edit, context;
-	if (document.querySelector("#checkbox").checked)
+	console.log("kek");
+}
+
+function selectOverlay(img_name, top, left) {
+	let edit, img;
+	if (!overlay[img_name])
 	{
-		imgCheck = 1;
-		edit = document.querySelector(".Left_edit");
-		context = edit.getContext("2d");
-		context.drawImage(this,0,0 ,800,600,0,0,800,600);
+		console.log("kek");
+		img = document.createElement("img");
+		img.src = "../../../public/images/" + img_name + ".png";
+		img.classList.add("overlay");
+		img.style.top = top + "%";
+		img.style.left = left + "%";
+		img.onclick = deleteOverlay;
+		img.value = img_name;
+		edit = document.querySelector("#box_video");
+		edit.appendChild(img);
+		overlay[img_name] = 1;
 	}
 }
 
-function editPicture() {
-	let select, meme, edit;
-	select = document.querySelector(".option");
-	if (imgCheck && document.querySelector("#checkbox").checked && !overlay[select.options[select.selectedIndex].value]) {
-		edit = document.querySelector("#upload_image");
-		meme = document.createElement("img");
-		meme.classList.add(select.options[select.selectedIndex].value);
-		meme.src = "../../../public/images/" + select.options[select.selectedIndex].value + ".png";
-		edit.appendChild(meme);
-		overlay["number"]++;
-		overlay[select.options[select.selectedIndex].value] = 1;
-		console.log(overlay);
-	}
-	return true;
+function deleteOverlay() {
+	this.remove();
+	overlay[this.value] = 0;
 }
 
 function uploadPhoto() {
-	let edit, image, xhttp;
-	edit = document.querySelector(".Left_edit");
+	let xhttp, data, width, height, image;
+
 	if (imgCheck)
 	{
-		image = convertCanvasToImage(edit);
+		image = document.querySelector("#photo");
+		width = image.getBoundingClientRect().width;
+		height = image.getBoundingClientRect().height;
+		data = {
+			"width" : Math.round(width),
+			"height" : Math.round(height)
+		};
+		xhttp = new XMLHttpRequest();
+		xhttp.open("post", "../../core/new-post.php", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send("img=" + image.src + "&" + requestData(data));
+		xhttp.onload = function () {
+			console.log("YRA");
+		}
 	}
-	else
-	{
-		alert("Please select picture");
-		return;
-	}
-	xhttp = new XMLHttpRequest();
-	xhttp.open("post", "../../core/new-post.php", true);
-	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("img=" + image.src + "&" + requestData(overlay));
-	xhttp.onload = function () {
 
-	}
 }

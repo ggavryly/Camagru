@@ -19,9 +19,10 @@ if ($_POST['email'])
 		$headers .= "From: Camagru <noreply@camagru.com>\r\n";
 		$headers .= "Reply-To: ".strip_tags($from)."\r\n";
 		mail($to, $subject, stripslashes($body), $headers);
+		echo json_encode(1);
 	}
 	else
 	{
-		echo "ERROR {NO ACCOUNT WITH THIS EMAIL}";
+		echo json_encode(0);
 	}
 }

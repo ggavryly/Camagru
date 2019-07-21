@@ -143,7 +143,9 @@ Class DatabaseController
 	public function new_user($user, $password, $email)
 	{
 		$prepare_user = self::$pdo->prepare("INSERT INTO users (login, password, email) VALUES (:login, :password, :email)");
-		if (!$this->search_user($user) && !$this->search_email($email))
+		$userfound =  $this->search_user($user);
+		$emailfound = $this->search_email($email);
+		if (!$userfound && !$emailfound)
 		{
 		    try {
                 $prepare_user->execute(array(":login" => $user, ":password" => $password, ":email" => $email));
@@ -154,6 +156,14 @@ Class DatabaseController
                 return (0);
             }
             return (1);
+		}
+		if ($userfound)
+		{
+			return (2);
+		}
+		if ($emailfound)
+		{
+			return (3);
 		}
 	}
 	public function like($post)

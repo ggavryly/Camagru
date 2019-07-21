@@ -3,8 +3,8 @@ require_once ("../config/include.php");
 if ($_POST['name'] && $_POST['pass'] && $_POST['email'])
 {
 	$db = new DatabaseController();
-	$response["answer"] = "0";
-    if ($db->new_user($_POST['name'], hash("whirlpool",$_POST['pass']), $_POST['email']))
+	$response = $db->new_user($_POST['name'], hash("whirlpool",$_POST['pass']), $_POST['email']);
+    if ($response == 1)
     {
     	$encoding = "utf-8";
 		$subject_preferences = array(
@@ -27,7 +27,6 @@ if ($_POST['name'] && $_POST['pass'] && $_POST['email'])
 		$headers .= "Reply-To: ".strip_tags($from)."\r\n";
         mail($to, $subject, stripslashes($body), $headers);
 		header('Content-Type: application/json');
-		$response["answer"] = "1";
         echo json_encode($response);
     }
     else

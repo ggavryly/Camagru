@@ -1,40 +1,18 @@
-function ajax (url,method,functionName, dataArray, mode) {
+function ajax (url,method,functionName, dataArray) {
 	let xhttp = new XMLHttpRequest();
 	xhttp.open(method, url, true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send(dataArray);
 
 	xhttp.onload = function () {
-		let response = JSON.parse(this.responseText);
-		if (mode === 1)
+		let response = JSON.parse(xhttp.responseText);
+		if (response === 1)
 		{
-			if (response["answer"] === "1")
-			{
-				alert("You have successfully registered");
-				backTransition();
-			}
-			else
-			{
-				alert("This data is already used by another user\nPlease type other data");
-			}
+			document.location.href = "photo-list.php";
 		}
-		else if (mode === 2) {
-			if (response === 0)
-			{
-				alert("Wrong data\nPlease rewrite your login or password");
-			}
-			else if (response === 2)
-			{
-				alert("Please confirm your email before authorization")
-			}
-			else
-			{
-				document.location.href = "photo-list.php";
-			}
-		}
-		else
+		else if (response === 2 || response === 0)
 		{
-
+			notification(response);
 		}
 	};
 	return (xhttp);
@@ -51,62 +29,95 @@ function requestData(dataArr) {
 
 function	signUp() {
 	let name, pass, email, form, data;
-	form = document.querySelector("#Right_form");
-	name = document.querySelector("#Right_field_login").value;
-	pass = document.querySelector("#Right_field_pass").value;
-	email = document.querySelector("#Right_field_email").value;
-	if (name === "" || pass === "" || email === "") {
-		alert("Wrong Data!");
-		return false;
-	}
+	name = document.querySelector("#sign-up-login").value;
+	pass = document.querySelector("#sign-up-pass").value;
+	email = document.querySelector("#sign-up-email").value;
 	data = {
 		"name" : name,
 		"pass" : pass,
 		"email" : email
 	};
-	ajax("../../core/new-user.php", "post", console.log, requestData(data), 1);
+	let xhttp = new XMLHttpRequest();
+	xhttp.open("post", "../../core/new-user.php", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send(requestData(data));
+
+	xhttp.onload = function () {
+		let response = JSON.parse(xhttp.responseText);
+		if (response === 1)
+		{
+			document.querySelector("#you-sign-up").style.display = "";
+		}
+		if (response === 2 || response === 3)
+		{
+			if (response === 2)
+			{
+				document.querySelector("#login-already").style.display = "";
+			}
+			else if (response === 3)
+			{
+				document.querySelector("#email-already").style.display = "";
+			}
+		}
+	};
 	return true;
+}
+
+function kaka() {
+
 }
 
 function signIn() {
 	let name, pass, data;
 
-	name = document.querySelector("#Center_field_login").value;
-	pass = document.querySelector("#Center_field_pass").value;
-	if (name === "" || pass === "")
-	{
-		alert("Please insert your login and password!");
-	}
+	name = document.querySelector("#login-input").value;
+	pass = document.querySelector("#pass-input").value;
 	data = {
 		"name" : name,
 		"pass" : pass,
 	};
-	ajax("../../core/authorization.php", "post", console.log, requestData(data), 2);
+	ajax("../../core/authorization.php", "post", console.log, requestData(data));
 }
 
 function resetPassword() {
 	let email, data;
 
-	email = document.querySelector("#Left_field_email").value;
+	email = document.querySelector("#forgot-email").value;
 	if (email === "") {
-		alert("Wrong Data!");
 		return false;
 	}
 	data = {
 		"email" : email
 	};
-	ajax("../../core/recover-pass.php", "post", console.log, requestData(data), 3);
+	let xhttp = new XMLHttpRequest();
+	xhttp.open("post", "../../core/recover-pass.php", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send(requestData(data));
 
+	xhttp.onload = function () {
+		let response = JSON.parse(xhttp.responseText);
+		if (response === 0)
+		{
+			document.querySelector("#no-email").style.display = "";
+		}
+		else if (response === 1)
+		{
+			document.querySelector("#success-email").style.display = "";
+		}
+	};
 }
 
-function leftTransition() {
-	document.querySelector(".form-slider").style.marginLeft = 0 + "px";
+function notification(response) {
+	if (response === 2)
+	{
+		document.querySelector("#please-conf-email").style.display = "";
+	}
+	else if (response === 0)
+	{
+		document.querySelector("#user-not-found").style.display = "";
+	}
 }
 
-function rightTransition() {
-	document.querySelector(".form-slider").style.marginLeft = "-" + 800 + "px";
-}
-
-function backTransition() {
-	document.querySelector(".form-slider").style.marginLeft = "-" + 400 + "px";
+function hideNotification(id) {
+	document.querySelector("#" + id).style.display = "none";
 }
