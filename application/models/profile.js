@@ -8,8 +8,16 @@ function ajax (url,method,dataArray) {
         if (this.readyState === 4 && this.status === 200)
         {
             let data = JSON.parse(this.responseText);
-            document.querySelector("#cur_log").innerHTML = "Your current login: " + data["login"];
-            document.querySelector("#cur_em").innerHTML = "Your current email: " + data["email"];
+            document.querySelector("#login").value = "Your current login: " + data["login"];
+            document.querySelector("#email").value = "Your current email: " + data["email"];
+            if (data["notification"] === "1")
+            {
+                document.querySelector("#notifications").value = "Notification: On";
+            }
+            else
+            {
+                document.querySelector("#notifications").value = "Notification: Off";
+            }
         }
     };
 }
@@ -30,6 +38,14 @@ function requestData(dataArr) {
         i += `${key}=${dataArr[key]}&`;
     }
     return i;
+}
+
+function editNotification() {
+    let http = new XMLHttpRequest();
+    http.open("post", "../../core/edit-notification.php", true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.send("1");
+    getCurrData();
 }
 
 function validateEmail(email) {

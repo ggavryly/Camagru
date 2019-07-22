@@ -12,7 +12,7 @@
 	<nav class="navbar is-dark is-medium">
 		<div class="container">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="#">Camagru</a>
+				<a class="navbar-item" href="../../../index.php">Camagru</a>
 				<span class="navbar-burger burger" data-target="navMenu">
 					<span></span>
 					<span></span>
@@ -21,7 +21,7 @@
 			</div>
 			<div id="navMenu" class="navbar-menu">
 				<div id="navbar-menu" class="navbar-end">
-					<a class="navbar-item" href="../../../index.php">Home</a>
+					<a class="navbar-item" href="photo-list.php">Photo-list</a>
 					<a class="navbar-item" href="login.php">Sign-in</a>
 					<a class="navbar-item" href="sign-up.php">Sign-up</a>
 				</div>
@@ -32,12 +32,6 @@
 		<div class="container">
 			<div class="columns is-5-tablet is-4-desktop is-3-widescreen">
 				<div class="column">
-					<div id="no-email" class="notification is-warning" style="display: none; width: 200px">
-						There no user with such email<button  onclick="hideNotification('no-email')" class="delete"></button>
-					</div>
-					<div id="success-email" class="notification is-success" style="display: none; width: 200px">
-						A recovery letter has come to your mail<button  onclick="hideNotification('success-email')" class="delete"></button>
-					</div>
 					<form class="box" onsubmit="return false">
 						<div class="field">
 							<label class="label">Forgot password</label>

@@ -8,6 +8,20 @@ overlay =  {
 	"ukraine" : 	0,
 };
 
+
+document.querySelector("#id_test").onchange = function() {
+	let reader = new FileReader();
+	reader.readAsDataURL(this.children[0].files[0]);
+	reader.onload = function () {
+		let decode = reader.result.replace(/^data:(.*;base64,)?/, '');
+		if ((decode.length % 4) > 0) {
+			decode += '='.repeat(4 - (decode.length % 4));
+		}
+		let img = document.createElement("img");
+		img.src = decode;
+	}
+};
+
 imgCheck = 0;
 video = document.querySelector("#video");
 button = document.querySelector(".Button_camera");
@@ -136,14 +150,13 @@ function deleteOverlay() {
 function uploadPhoto() {
 	let xhttp, data, width, height, image;
 
-	if (imgCheck)
-	{
+	if (imgCheck) {
 		image = document.querySelector("#photo");
 		width = image.getBoundingClientRect().width;
 		height = image.getBoundingClientRect().height;
 		data = {
-			"width" : Math.round(width),
-			"height" : Math.round(height)
+			"width": Math.round(width),
+			"height": Math.round(height)
 		};
 		xhttp = new XMLHttpRequest();
 		xhttp.open("post", "../../core/new-post.php", true);
@@ -152,6 +165,8 @@ function uploadPhoto() {
 		xhttp.onload = function () {
 			console.log("YRA");
 		}
+	} else {
+
 	}
 
 }

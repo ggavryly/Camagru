@@ -1,5 +1,5 @@
 <?php
-include_once ("application/config/include.php");
+include_once("application/config/include.php");
 session_start();
 if ($_SESSION['log'] == "1")
 {

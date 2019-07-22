@@ -13,7 +13,7 @@
 	<nav class="navbar is-dark is-medium">
 		<div class="container">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="#">Camagru</a>
+				<a class="navbar-item" href="../../../index.php">Camagru</a>
 				<span class="navbar-burger burger" data-target="navMenu">
 					<span></span>
 					<span></span>
@@ -67,6 +67,19 @@
 						<figure class="image picture ">
 							<img id="photo" src="../../../public/styles/style-images/no-photo.png">
 						</figure>
+						<div class="file">
+							<label class="file-label" style="" id="id_test">
+								<input id="choose_file" class="file-input" type="file" name="resume" value="kopa">
+								<span class="file-cta">
+									<span class="file-icon">
+										<i class="fas fa-upload"></i>
+									</span>
+									<span class="file-label">
+        								Choose a file…
+      								</span>
+   							 </span>
+							</label>
+						</div>
 					</div>
 				</div>
 			</div>

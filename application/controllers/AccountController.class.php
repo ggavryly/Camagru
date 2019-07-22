@@ -50,7 +50,9 @@ Class AccountController
             $PP = $this->DBH->__get_pdo()->prepare("UPDATE users SET login = :login WHERE id_user = :id_user");
             $PP->setFetchMode(PDO::FETCH_ASSOC);
             $PP->execute(array(':login' => $new_login  ,':id_user' => $id_user));
+            return (1);
         }
+        return (0);
     }
     public function new_email($new_email, $id_user)
     {
@@ -59,7 +61,9 @@ Class AccountController
             $PP = $this->DBH->__get_pdo()->prepare("UPDATE users SET email = :email WHERE id_user = :id_user");
             $PP->setFetchMode(PDO::FETCH_ASSOC);
             $PP->execute(array(':email' => $new_email, ':id_user' => $id_user));
+            return (1);
         }
+        return (0);
     }
 	public function authorization($login, $pass)
 	{
@@ -97,11 +101,27 @@ Class AccountController
 	}
 	public function load_images()
 	{
-		$request = $this->DBH->__get_pdo()->prepare("SELECT id_user, post FROM posts");
+		$array_posts = [];
+		$request = $this->DBH->__get_pdo()->prepare("SELECT * FROM posts");
 		$request->setFetchMode(PDO::FETCH_ASSOC);
 		$request->execute();
-		$images = $request->fetch();
-		return ($images);
+		for ($i = 0; $i < $request->rowCount(); $i++)
+		{
+			$array_posts[$i] = $request->fetch();
+		}
+		return ($array_posts);
+	}
+	public function load_comments($id)
+	{
+		$request = $this->DBH->__get_pdo()->prepare("SELECT * FROM comments WHERE id_post = :id_post");
+		$request->setFetchMode(PDO::FETCH_BOTH);
+		$request->execute(array("id_post" => $id));
+		$array_comments = [];
+		for ($i = 0; $i < $request->rowCount(); $i++)
+		{
+			$array_comments[$i] = $request->fetch();
+		}
+		return ($array_comments);
 	}
 	public function __destruct()
 	{

@@ -12,7 +12,7 @@
 	<nav class="navbar is-dark is-medium">
 		<div class="container">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="#">Camagru</a>
+				<a class="navbar-item" href="../../../index.php">Camagru</a>
 				<span class="navbar-burger burger" data-target="navMenu">
 					<span></span>
 					<span></span>
@@ -21,7 +21,7 @@
 			</div>
 			<div id="navMenu" class="navbar-menu">
 				<div class="navbar-end">
-					<a class="navbar-item" href="../../../index.php">Home</a>
+					<a class="navbar-item" href="photo-list.php">Photo-list</a>
 					<a class="navbar-item" href="login.php">Sign-in</a>
 					<a class="navbar-item" href="sign-up.php">Sign-up</a>
 				</div>
@@ -34,9 +34,6 @@
 				<div class="column">
 					<div class="notification is-warning" id="user-not-found" style="display: none; width: 200px">
 						User not found<button id="user-not-found" class="delete" onclick="hideNotification('user-not-found')"></button>
-					</div>
-					<div id="please-conf-email" class="notification is-warning" style="display: none; width: 200px">
-						Please confirm your email<button  onclick="hideNotification('please-conf-email')" class="delete"></button>
 					</div>
 					<form class="box" onsubmit="return false">
 						<div class="field">

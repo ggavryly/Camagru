@@ -61,7 +61,7 @@ Class DatabaseController
 	}
 	public function get_user_data($login)
 	{
-		$result = self::$pdo->prepare("SELECT login, email FROM users WHERE login = :login");
+		$result = self::$pdo->prepare("SELECT login, email, notification FROM users WHERE login = :login");
 		$result->setFetchMode(PDO::FETCH_ASSOC);
 		$result->execute(array(":login" => $login));
 		$check = $result->fetch();
@@ -132,13 +132,11 @@ Class DatabaseController
 		$request->setFetchMode(PDO::FETCH_ASSOC);
 		$request->execute(array(":id_user" => $user, ":post" => $post));
 	}
-	public function new_comment($user, $info, $post)
+	public function new_comment($id_user, $id_post, $comment)
 	{
-		$prepare_user = self::$pdo->prepare("SELECT id FROM users WHERE login = ?;");
-		$prepare_user->bindParam(1, $user);
-		$prepare_user->execute();
-		$prepare_info = self::$pdo->prepare("INSERT INTO comments (id_user, id_post, comment) VALUES (:id_user, :post, :info)");
-		$prepare_info->execute(array(":id_user" => $prepare_user->execute(), ":post" => $post, ":info" => $info));
+		$request = self::$pdo->prepare("INSERT INTO comments (id_user,id_post ,comment) VALUES (:id_user, :id_post, :comment);");
+		$request->setFetchMode(PDO::FETCH_ASSOC);
+		$request->execute(array("id_user" => $id_user, "id_post" => $id_post, "comment" => $comment));
 	}
 	public function new_user($user, $password, $email)
 	{
@@ -165,6 +163,27 @@ Class DatabaseController
 		{
 			return (3);
 		}
+	}
+	public function notification($id)
+	{
+		$request = self::$pdo->prepare("SELECT notification FROM users WHERE id_user = :id_user");
+		$request->setFetchMode(PDO::FETCH_ASSOC);
+		$request->execute(array("id_user" => $id));
+		$result =  $request->fetch();
+		return ($result["notification"]);
+	}
+	public function edit_notification($id)
+	{
+		if ($this->notification($id))
+		{
+			$request = self::$pdo->prepare("UPDATE users SET notification = 0 WHERE id_user = :id_user");
+		}
+		else
+		{
+			$request = self::$pdo->prepare("UPDATE users SET notification = 1 WHERE id_user = :id_user");
+		}
+		$request->setFetchMode(PDO::FETCH_ASSOC);
+		$request->execute(array("id_user" => $id));
 	}
 	public function like($post)
 	{
