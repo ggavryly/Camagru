@@ -1,30 +1,80 @@
-function requestData(dataArr) {
-	let i = "";
-	for (let key in dataArr)
-	{
-		i += `${key}=${dataArr[key]}&`;
-	}
-	return i;
-}
-
-let like1 = 0;
-
 let needle = {
 	"mode" : 1,
-	"id_post" : 0,
+	"id_post" : 0
+};
+
+let comn = {
+	"curr" : 0,
+	"first" : 0
 };
 
 uploadPosts(needle);
+getLikes();
 function like() {
-	if (like1 === 0)
-	{
-		this.children[0].src = "../../../public/styles/style-images/like-1.png"
-		like1 = 1;
-	}
-	else if (like1 === 1)
-	{
-		this.children[0].src = "../../../public/styles/style-images/like-0.png"
-		like1 = 0;
+	let xhttp = new XMLHttpRequest();
+	let like = {
+		"id_post" : this.dataset.id_post,
+		"id_user" : getCookie("id_user"),
+		"login" : getCookie("login")
+	};
+	let spane = this;
+	xhttp.open("post", "../../core/like.php", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send(requestData(like));
+	xhttp.onload = function () {
+		try {
+			let response = JSON.parse(xhttp.responseText);
+			if (response === 1)
+			{
+				spane.children[0].src = "../../../public/styles/style-images/like-1.png";
+			}
+			else
+			{
+				spane.children[0].src = "../../../public/styles/style-images/like-0.png";
+			}
+		}
+		catch (e) {
+
+		}
+		finally {
+
+		}
+
+	};
+
+}
+
+function getLikes() {
+	let ajax = new XMLHttpRequest();
+	let data = {
+		"id_user" : getCookie("id_user"),
+		"login" : getCookie("login")
+	};
+	ajax.open("post", "../../core/get-like.php", true);
+	ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	ajax.send(requestData(data));
+	ajax.onload = function () {
+		try {
+			let data = JSON.parse(ajax.responseText);
+			for (let i in data)
+			{
+				if (data[i]["amount"] === "0")
+				{
+					document.querySelector("#span-id" + data[i]["id_post"]).children[0].src = "../../../public/styles/style-images/like-0.png";
+				}
+				else
+				{
+					document.querySelector("#span-id" + data[i]["id_post"]).children[0].src = "../../../public/styles/style-images/like-1.png";
+				}
+
+			}
+		}
+		catch (e) {
+
+		}
+		finally {
+
+		}
 	}
 }
 
@@ -99,17 +149,14 @@ function uploadPosts(needle, id ,post)
 
 }
 
-function deletePost() {
-
-}
-
 function addComment() {
 	let comment = document.querySelector("#textarea").value;
 
 	let data = {
 		"id_post" : document.querySelector("#comment_button").dataset.id_post,
 		"comment" : comment,
-		"id_user" : document.querySelector("#comment_button").dataset.id_user
+		"id_user" : document.querySelector("#comment_button").dataset.id_user,
+		"login" : getCookie("login")
 	};
 	let xhttp = new XMLHttpRequest();
 	xhttp.open("post", "../../core/new-comment.php", true);
@@ -131,8 +178,25 @@ function uploadPost() {
 }
 
 function createViewPost(data, post) {
-	let box, p_box, title, x;
+	let box, p_box, title, x, remove;
 
+	remove = document.querySelector("#comments").children;
+	if (data[0]["id_post"] === comn["curr"])
+	{
+		return 0;
+	}
+	else if (data[0]["id_post"] !== comn["curr"])
+	{
+		if (comn["first"])
+		{
+			console.log("remove");
+			let p_com = document.querySelector("#comments");
+			p_com.innerHTML = "<h5 class=\"title is-5\" style=\"color:black\">Comments</h5>"
+		}
+
+		comn["first"] = 1;
+	}
+	comn["curr"] = data[0]["id_post"];
 	document.querySelector("#comment_img").src = post;
 	p_box = document.querySelector("#comments");
 	for (let i in data)
@@ -208,6 +272,7 @@ function createPost(nick, post, id, id_post) {
 	span.classList.add("icon");
 	span.appendChild(img_2);
 	span.onclick = like;
+	span.id = "span-id" + id_post;
 	span.dataset.id_post = id_post;
 	span.style.float = "right";
 	span.style.margin = "10px 0 10px 10px";

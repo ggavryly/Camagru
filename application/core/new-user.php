@@ -1,5 +1,10 @@
 <?php
-require_once ("../config/include.php");
+include_once("../controllers/AccountController.class.php");
+include_once("../controllers/DatabaseController.class.php");
+include_once("../../config/database.php");
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+date_default_timezone_set("Europe/Kiev");
 if ($_POST['name'] && $_POST['pass'] && $_POST['email'])
 {
 	$db = new DatabaseController();
@@ -18,7 +23,7 @@ if ($_POST['name'] && $_POST['pass'] && $_POST['email'])
         $subject = "Confirm email address";
         $to = $_POST['email'];
         $from = "no-reply";
-        $body = "Salute cowboy,<br>Please confirm your email address <br><hr><a href='https://localhost:8443/Camagru/application/core/confirm-email.php?cr={$encrypt}&action=confirm'>Click here</a> to confirm your email<hr>";
+        $body = "Salute cowboy,<br>Please confirm your email address <br><hr><a href='https://localhost:8443/application/core/confirm-email.php?cr={$encrypt}&action=confirm'>Click here</a> to confirm your email<hr>";
 		$headers = "MIME-Version: 1.0\r\n";
 		$headers .= "Content-Transfer-Encoding: 8bit \r\n";
 		$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";

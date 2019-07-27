@@ -12,24 +12,6 @@ function ajax (url,method,functionName, dataArray) {
     };
 }
 
-function subscribe(url,functionName) {
-    let xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = function() {
-        if (this.readyState != 4) return;
-
-        if (this.status == 200) {
-            functionName(this.responseText);
-        } else {
-            console.log(this);
-        }
-
-        subscribe(url);
-    };
-    xhr.open("GET", url, true);
-    xhr.send();
-}
-
 function requestData(dataArr) {
     let i = "";
     for (let key in dataArr)

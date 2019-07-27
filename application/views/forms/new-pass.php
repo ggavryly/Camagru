@@ -32,39 +32,19 @@
 		<div class="container">
 			<div class="columns is-5-tablet is-4-desktop is-3-widescreen">
 				<div class="column">
-					<div id="you-sign-up" class="notification is-warning" style="display: none; width: 200px">
-						You have successfully registered<button  onclick="hideNotification('you-sign-up')" class="delete"></button>
-					</div>
 					<form class="box" onsubmit="return false">
 						<div class="field">
-							<label class="label">Login</label>
+							<label class="label">Enter new password</label>
 							<div class="control has-icons-left">
-								<input id="sign-up-login" type="text" class="input" placeholder="Your Login" required>
+								<input id="new_passe" type="password" class="input" placeholder="New password" required>
 								<span class="icon is-small is-left">
                                         <i class="fas fa-envelope"></i>
                                     </span>
 							</div>
+							<br>
 						</div>
 						<div class="field">
-							<label class="label">Password</label>
-							<div class="control has-icons-left">
-								<input id="sign-up-pass" type="password" class="input" placeholder="*********" required>
-								<span class="icon is-small is-left">
-                                        <i class="fas fa-envelope"></i>
-                                    </span>
-							</div>
-						</div>
-						<div class="field">
-							<label class="label">Email</label>
-							<div class="control has-icons-left">
-								<input id="sign-up-email" type="email" class="input" placeholder="Your Email" required>
-								<span class="icon is-small is-left">
-                                        <i class="fas fa-envelope"></i>
-                                    </span>
-							</div>
-						</div>
-						<div class="field">
-							<button class="button is-success" onclick="signUp()">Sent</button>
+							<button class="button is-success" onclick="new_pass()">Sent</button>
 						</div>
 					</form>
 				</div>
@@ -74,12 +54,22 @@
 </section>
 <script src="../../models/useful.js"></script>
 <script>
-    let burger = document.querySelector(".burger");
-    let nav = document.querySelector("#"+burger.dataset.target);
-    burger.addEventListener("click", function () {
-        burger.classList.toggle("is-active");
-        nav.classList.toggle("is-active");
-    })
+	let burger = document.querySelector(".burger");
+	let nav = document.querySelector("#"+burger.dataset.target);
+	burger.addEventListener("click", function () {
+		burger.classList.toggle("is-active");
+		nav.classList.toggle("is-active");
+	});
+	if (!getCookie("forgot"))
+	{
+		let get_id = window.location.href.match(/=([^&]*)/)[1];
+		let get_login = window.location.href.match(/login=(.*)/)[1];
+		let now = new Date();
+		now.setMonth( now.getMonth() + 1 );
+		document.cookie = "login = " + escape(get_login)+"; " + "expires=" + now.toUTCString() + ";";
+		document.cookie = "id_user = " + escape(get_id)+"; " + "expires=" + now.toUTCString() + ";";
+		document.cookie = "forgot = 1;expires=" + now.toUTCString() + ";";
+	}
 </script>
 <script src="../../models/enter.js"></script>
 </body>

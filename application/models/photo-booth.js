@@ -9,18 +9,18 @@ overlay =  {
 };
 
 
-document.querySelector("#id_test").onchange = function() {
-	let reader = new FileReader();
-	reader.readAsDataURL(this.children[0].files[0]);
-	reader.onload = function () {
-		let decode = reader.result.replace(/^data:(.*;base64,)?/, '');
-		if ((decode.length % 4) > 0) {
-			decode += '='.repeat(4 - (decode.length % 4));
-		}
-		let img = document.createElement("img");
-		img.src = decode;
-	}
-};
+// document.querySelector("#id_test").onchange = function() {
+// 	let reader = new FileReader();
+// 	reader.readAsDataURL(this.children[0].files[0]);
+// 	reader.onload = function () {
+// 		let decode = reader.result.replace(/^data:(.*;base64,)?/, '');
+// 		if ((decode.length % 4) > 0) {
+// 			decode += '='.repeat(4 - (decode.length % 4));
+// 		}
+// 		let img = document.createElement("img");
+// 		img.src = decode;
+// 	}
+// };
 
 imgCheck = 0;
 video = document.querySelector("#video");
@@ -156,7 +156,9 @@ function uploadPhoto() {
 		height = image.getBoundingClientRect().height;
 		data = {
 			"width": Math.round(width),
-			"height": Math.round(height)
+			"height": Math.round(height),
+			"id_user": getCookie("id_user"),
+			"login": getCookie("login")
 		};
 		xhttp = new XMLHttpRequest();
 		xhttp.open("post", "../../core/new-post.php", true);

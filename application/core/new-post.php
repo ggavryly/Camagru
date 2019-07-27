@@ -1,9 +1,14 @@
 <?php
-include_once ("../config/include.php");
+include_once("../controllers/AccountController.class.php");
+include_once("../controllers/DatabaseController.class.php");
+include_once("../../config/database.php");
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+date_default_timezone_set("Europe/Kiev");
 session_start();
 
 
-if (isset($_SESSION["log"]) && isset($_POST['img']))
+if (isset($_SESSION["login:".$_POST["login"]]) && isset($_POST['img']))
 {
 	$src_img = $_POST['img'];
 	$unique_id = uniqid();
@@ -13,10 +18,10 @@ if (isset($_SESSION["log"]) && isset($_POST['img']))
 	$src_data = base64_decode($src_img);
 	list($width, $height) = getimagesizefromstring($src_data);
 	$js_img = imagecreatefromstring($src_data);
-	$img_name = "../views/posts/" . $_SESSION["login"] ."_" . $unique_id . ".jpg";
+	$img_name = "../views/posts/" . $_POST["login"] ."_" . $unique_id . ".jpg";
 	$out = imagecreatetruecolor($width, $height);
 	imagecopyresampled($out, $js_img, 0, 0, 0, 0, $width, $height, $width, $height);
-	$DH->new_post($DH->get_id_user($_SESSION['login'], "login"), $_SESSION['login']."_".$unique_id.".jpg");
+	$DH->new_post($_SESSION["login:".$_POST["login"]], $_POST["login"]."_".$unique_id.".jpg");
 	imagejpeg($out, $img_name, 100);
 	echo json_encode(1);
 }

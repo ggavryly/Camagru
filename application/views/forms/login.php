@@ -66,6 +66,7 @@
 		</div>
 	</div>
 </section>
+<script src="../../models/useful.js"></script>
 <script>
     let burger = document.querySelector(".burger");
     let nav = document.querySelector("#"+burger.dataset.target);

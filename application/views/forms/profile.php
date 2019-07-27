@@ -21,9 +21,9 @@
 			</div>
 			<div id="navMenu" class="navbar-menu">
 				<div class="navbar-end">
-					<a class="navbar-item" href="photo-list.php">Photo-list</a>
-					<a class="navbar-item" href="photo-booth.php">Photo-booth</a>
-					<a class="navbar-item" href="../../core/logout.php">Log out</a>
+					<a href="photo-list.php" class="navbar-item" >Photo-list</a>
+					<a href="photo-booth.php" class="navbar-item" >Photo-booth</a>
+					<p class="navbar-item" onclick="deleteCookie()" style="color: white">Log out</p>
 				</div>
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 					<div class="box">
 						<div class="box">
 							<div class="control">
-								<input id="login" class="input" type="text" value="Your current login: "readonly>
+								<input id="login" class="input" type="text" value="Your current login: " readonly>
 							</div>
 						</div>
 						<div class="box">
@@ -61,6 +61,7 @@
 		</div>
 	</div>
 </section>
+<script src="../../models/useful.js"></script>
 <script>
 	let burger = document.querySelector(".burger");
 	let nav = document.querySelector("#"+burger.dataset.target);
@@ -69,13 +70,12 @@
 		nav.classList.toggle("is-active");
 	})
 </script>
-<?php
-session_start();
-if (!isset($_SESSION["log"]))
-{
-	header("Location: login.php");
-}
-?>
+<script>
+	if (getCookie("login") === undefined)
+	{
+		document.location.href = "login.php";
+	}
+</script>
 <script src="../../models/profile.js"></script>
 </body>
 </html>

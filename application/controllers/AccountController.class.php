@@ -67,23 +67,25 @@ Class AccountController
     }
 	public function authorization($login, $pass)
 	{
+		$array = array();
         $result = $this->DBH->__get_pdo()->prepare("SELECT id_user , login, password, verif_e FROM users WHERE login = :login AND password = :pass");
 		$result->setFetchMode(PDO::FETCH_ASSOC);
 		$result->execute(array(":login" => $login, ":pass" => $pass));
 		$check = $result->fetch();
 		if (isset($check['id_user']) && $check['verif_e'] == 1)
 		{
-			$this->user_id = $check['id_user'];
-			$this->user_name = $check['login'];
-			$this->user_log = 1;
-			return (1);
+			$array["id_user"] = $check['id_user'];
+			$array["login"] = $check['login'];
+			$array["response"] = 1;
 		}
 		else if (isset($check['id_user']) && $check['verif_e'] == 0)
 		{
-			return (2);
+			$array["response"] = 2;
 		}
-		else
-			return (0);
+		else {
+			$array["response"] = 0;
+		}
+		return ($array);
 	}
 	public function validate_email($id)
 	{

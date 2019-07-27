@@ -1,11 +1,18 @@
 <?php
-include_once ("../config/include.php");
+include_once("../controllers/AccountController.class.php");
+include_once("../controllers/DatabaseController.class.php");
+include_once("../../config/database.php");
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+date_default_timezone_set("Europe/Kiev");
 session_start();
-if (isset($_SESSION['log']))
+if (isset($_SESSION["login:".$_POST['login']]))
 {
+	print_r("kek");
 	$data = array();
 	$DH = new DatabaseController();
-	$DH->new_comment($DH->get_id_user($_SESSION["login"], "login"), $_POST["id_post"], $_POST["comment"]);
+	print_r($_SESSION["login:".$_POST['login']]);
+	$DH->new_comment($_SESSION["login:".$_POST['login']], $_POST["id_post"], $_POST["comment"]);
 	if ($DH->notification($_POST["id_user"]))
 	{
 		$encoding = "utf-8";
@@ -20,7 +27,7 @@ if (isset($_SESSION['log']))
 		$subject = "Like in camagru";
 		$to = $DH->get_email($_POST["id_user"], "id");
 		$from = "no-reply";
-		$body = "Salute cowboy,<br>Your post is like by {$_SESSION["login"]} <hr>";
+		$body = "Salute cowboy,<br>Your post is comment by {$_POST['login']} <hr>";
 		$headers = "MIME-Version: 1.0\r\n";
 		$headers .= "Content-Transfer-Encoding: 8bit \r\n";
 		$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";

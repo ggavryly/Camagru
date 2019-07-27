@@ -22,9 +22,9 @@
 			</div>
 			<div id="navMenu" class="navbar-menu">
 				<div class="navbar-end">
-					<a class="navbar-item" href="profile.php">Profile</a>
-					<a class="navbar-item" href="photo-booth.php">Photo-booth</a>
-					<a class="navbar-item" href="../../core/logout.php">Log out</a>
+					<a class="navbar-item" href="profile.php" >Profile</a>
+					<a class="navbar-item" href="photo-booth.php" >Photo-booth</a>
+					<p class="navbar-item"  onclick="deleteCookie()" style="color: white">Log out</p>
 				</div>
 			</div>
 		</div>
@@ -49,13 +49,13 @@
 						</div>
 						<textarea id="textarea" class="textarea" placeholder="Add a comment..."></textarea>
 						<button id="comment_button" class="button is-info" style="margin: 10px 10px 10px 0" onclick="addComment()">Comment</button>
-
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
+<script src="../../models/useful.js"></script>
 <script>
     let burger = document.querySelector(".burger");
     let nav = document.querySelector("#"+burger.dataset.target);

@@ -31,20 +31,13 @@ let data = {
 
 getCurrData();
 
-function requestData(dataArr) {
-    let i = "";
-    for (let key in dataArr)
-    {
-        i += `${key}=${dataArr[key]}&`;
-    }
-    return i;
-}
-
 function editNotification() {
     let http = new XMLHttpRequest();
+    data["id_user"] = getCookie("id_user");
+    data["login"] = getCookie("login");
     http.open("post", "../../core/edit-notification.php", true);
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.send("1");
+    http.send(requestData(data));
     getCurrData();
 }
 
@@ -60,8 +53,16 @@ function editLogin() {
     let new_login = prompt("Please enter new login");
     if (new_login)
     {
-        data["login"] = new_login;
+        let now = new Date();
+        now.setMonth( now.getMonth() + 1 );
+        data["new_login"] = new_login;
         data["mode"] = "login";
+        data["id_user"] = getCookie("id_user");
+        data["login"] = getCookie("login");
+        let options = {
+            "expires" : 2629743
+        };
+        setCookie("login", new_login, options);
         xhttp.send(requestData(data));
         xhttp.onload = function ()
         {
@@ -83,6 +84,8 @@ function editPass() {
     {
         data["pass"] = new_pass;
         data["mode"] = "pass";
+        data["id_user"] = getCookie("id_user");
+        data["login"] = getCookie("login");
         xhttp.send(requestData(data));
         xhttp.onload = function ()
         {
@@ -104,6 +107,8 @@ function editEmail() {
     {
         data["email"] = new_email;
         data["mode"] = "email";
+        data["id_user"] = getCookie("id_user");
+        data["login"] = getCookie("login");
         xhttp.send(requestData(data));
         xhttp.onload = function ()
         {
@@ -117,5 +122,9 @@ function editEmail() {
 }
 
 function getCurrData() {
-    ajax("../../core/current-data.php" ,"post", "1=1");
+    let data = {
+        "id_user" : getCookie("id_user"),
+        "login" : getCookie("login")
+    };
+    ajax("../../core/current-data.php" ,"post", requestData(data));
 }

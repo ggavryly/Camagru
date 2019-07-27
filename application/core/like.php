@@ -6,8 +6,9 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 date_default_timezone_set("Europe/Kiev");
 session_start();
-if (isset($_POST))
+if (isset($_SESSION["login:".$_POST['login']]))
 {
-	unset($_SESSION["login:".$_POST["login"]]);
+	$DH = new DatabaseController();
+	$data = $DH->like($_POST["id_post"], $_POST["id_user"]);
+	echo json_encode($data);
 }
-echo json_encode("1");

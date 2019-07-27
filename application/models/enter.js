@@ -7,11 +7,15 @@ function ajax (url,method,functionName, dataArray) {
 	xhttp.onload = function () {
 		try {
 			let response = JSON.parse(xhttp.responseText);
-			if (response === 1)
+			if (response["response"] === 1)
 			{
-				document.location.href = "photo-list.php";
+				let now = new Date();
+				now.setMonth( now.getMonth() + 1 );
+				document.cookie = "login = " + escape(response["login"])+"; " + "expires=" + now.toUTCString() + ";";
+				document.cookie = "id_user = " + escape(response["id_user"])+"; " + "expires=" + now.toUTCString() + ";";
+				document.location.href = "photo-booth.php";
 			}
-			else if (response === 2 || response === 0)
+			else if (response["response"] === 2 || response["response"] === 0)
 			{
 				notification(response);
 			}
@@ -27,14 +31,6 @@ function ajax (url,method,functionName, dataArray) {
 	return (xhttp);
 }
 
-function requestData(dataArr) {
-	let i = "";
-	for (let key in dataArr)
-	{
-		i += `${key}=${dataArr[key]}&`;
-	}
-	return i;
-}
 
 function validatePassword(field) {
 	if (field.length < 6) {
@@ -73,6 +69,7 @@ function	signUp() {
 		xhttp.onload = function () {
 			try {
 				let response = JSON.parse(xhttp.responseText);
+				console.log(response);
 				if (response === 1)
 				{
 					document.location.href = "login.php";
@@ -156,11 +153,38 @@ function resetPassword() {
 	};
 }
 
+function new_pass() {
+
+	let pass, data;
+
+	pass = document.querySelector("#new_passe").value;
+	if (pass === "") {
+		return false;
+	}
+	data = {
+		"pass" : pass,
+		"id_user" : getCookie("id_user"),
+		"login" : getCookie("login"),
+		"mode" : "pass"
+	};
+	let xhttp = new XMLHttpRequest();
+	xhttp.open("post", "../../core/edit-user-data.php", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send(requestData(data));
+
+	xhttp.onload = function () {
+		try {
+			document.location.href = "login.php";
+
+		} catch (e) {
+
+		} finally {
+
+		}
+	};
+}
+
 function notification(response) {
 	document.querySelector("#you-sign-up").style.display = "";
 	document.querySelector("#you-sign-up").innerHTML = response + "<button  onclick=\"hideNotification('you-sign-up')\" class=\"delete\"></button>";
-}
-
-function hideNotification(id) {
-	document.querySelector("#" + id).style.display = "none";
 }

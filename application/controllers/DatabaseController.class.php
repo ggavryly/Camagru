@@ -1,5 +1,5 @@
 <?php
-include_once ("../config/database.php");
+include_once("../../config/database.php");
 
 Class DatabaseController
 {
@@ -185,11 +185,49 @@ Class DatabaseController
 		$request->setFetchMode(PDO::FETCH_ASSOC);
 		$request->execute(array("id_user" => $id));
 	}
-	public function like($post)
+	public function get_like($id_user)
 	{
-		$prepare_post = self::$pdo->prepare("UPDATE posts SET likes + 1 WHERE ?");
-		$prepare_post->bindParam(1, $post);
-		$prepare_post->execute();
+		$array_posts = [];
+		$request = self::$pdo->prepare("SELECT * FROM likes WHERE id_user = :id_user");
+		$request->setFetchMode(PDO::FETCH_ASSOC);
+		$request->execute(array("id_user" => $id_user));
+		for ($i = 0; $i < $request->rowCount(); $i++)
+		{
+			$array_posts[$i] = $request->fetch();
+		}
+		return ($array_posts);
+	}
+	public function like($id_post, $id_user)
+	{
+		$check = self::$pdo->prepare("SELECT * FROM likes WHERE id_post = :id_post AND id_user = :id_user");
+		$check->setFetchMode(PDO::FETCH_ASSOC);
+		$check->execute(array("id_post" => $id_post, "id_user" => $id_user));
+		$test = $check->fetch();
+		if (isset($test["amount"]))
+		{
+			if ($test["amount"] == 1)
+			{
+				$check = self::$pdo->prepare("UPDATE likes SET amount = 0 WHERE id_post = :id_post AND id_user = :id_user");
+				$check->setFetchMode(PDO::FETCH_ASSOC);
+				$check->execute(array("id_post" => $id_post, "id_user" => $id_user));
+				return (0);
+			}
+			else
+			{
+				$check = self::$pdo->prepare("UPDATE likes SET amount = 1 WHERE id_post = :id_post AND id_user = :id_user");
+				$check->setFetchMode(PDO::FETCH_ASSOC);
+				$check->execute(array("id_post" => $id_post, "id_user" => $id_user));
+				return (1);
+			}
+		}
+		else
+		{
+			$check = self::$pdo->prepare("INSERT INTO likes (id_post, id_user, amount) VALUES (:id_post, :id_user, :amount)");
+			$check->setFetchMode(PDO::FETCH_ASSOC);
+			$check->execute(array("id_post" => $id_post, "id_user" => $id_user, "amount" => 1));
+			return (1);
+		}
+
 	}
 	public function __destruct()
 	{
