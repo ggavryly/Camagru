@@ -29,12 +29,9 @@
 		</div>
 	</nav>
 	<div class="hero-body">
-		<div class="container">
+		<div class="container body-e">
 			<div class="columns is-5-tablet is-4-desktop is-3-widescreen">
 				<div class="column">
-					<div id="you-sign-up" class="notification is-warning" style="display: none; width: 200px">
-						You have successfully registered<button  onclick="hideNotification('you-sign-up')" class="delete"></button>
-					</div>
 					<form class="box" onsubmit="return false">
 						<div class="field">
 							<label class="label">Login</label>

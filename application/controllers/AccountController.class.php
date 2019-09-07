@@ -80,7 +80,7 @@ Class AccountController
 		}
 		else if (isset($check['id_user']) && $check['verif_e'] == 0)
 		{
-			$array["response"] = 2;
+			$array["response"] = 4;
 		}
 		else {
 			$array["response"] = 0;
@@ -125,6 +125,22 @@ Class AccountController
 		}
 		return ($array_comments);
 	}
+	public function delete_post($id_user, $id_post)
+    {
+        $request = $this->DBH->__get_pdo()->prepare("SELECT * FROM posts WHERE id_post = :id_post");
+        $request->setFetchMode(PDO::FETCH_BOTH);
+        $request->execute(array("id_post" => $id_post));
+        $check = $request->fetch();
+        if ($check["id_user"] === $id_user)
+        {
+            $delete = $this->DBH->__get_pdo()->prepare("DELETE FROM posts WHERE id_post = :id_post");
+            $delete->setFetchMode(PDO::FETCH_BOTH);
+            $delete->execute(array("id_post" => $id_post));
+            return (1);
+        }
+        else
+            return (0);
+    }
 	public function __destruct()
 	{
 	}

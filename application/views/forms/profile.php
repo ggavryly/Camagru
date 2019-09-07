@@ -71,7 +71,13 @@
 	})
 </script>
 <script>
-	if (getCookie("login") === undefined)
+	function getCookie(name) {
+		let matches = document.cookie.match(new RegExp(
+			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		));
+		return matches ? decodeURIComponent(matches[1]) : 0;
+	}
+	if (getCookie("login") === 0)
 	{
 		document.location.href = "login.php";
 	}

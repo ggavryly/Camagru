@@ -29,7 +29,7 @@
 		</div>
 	</nav>
 	<div class="hero-body">
-		<div class="container">
+		<div class="container body-e">
 			<div class="columns is-5-tablet is-4-desktop is-3-widescreen">
 				<div class="column">
 					<form class="box" onsubmit="return false">

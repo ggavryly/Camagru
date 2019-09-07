@@ -147,6 +147,21 @@ function deleteOverlay() {
 	overlay[this.value] = 0;
 }
 
+function chooseFile() {
+	let photo = document.querySelector("#photo");
+	let file = document.querySelector("#choose_file").files[0];
+	let reader = new FileReader();
+
+	reader.onloadend = function () {
+		imgCheck = 1;
+		photo.src = reader.result;
+	};
+	if (file)
+		reader.readAsDataURL(file);
+	else
+		photo.src = "../../../public/styles/style-images/no-photo.png";
+}
+
 function uploadPhoto() {
 	let xhttp, data, width, height, image;
 
@@ -160,12 +175,12 @@ function uploadPhoto() {
 			"id_user": getCookie("id_user"),
 			"login": getCookie("login")
 		};
+		console.log(image);
 		xhttp = new XMLHttpRequest();
 		xhttp.open("post", "../../core/new-post.php", true);
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.send("img=" + image.src + "&" + requestData(data));
 		xhttp.onload = function () {
-			console.log("YRA");
 		}
 	} else {
 

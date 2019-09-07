@@ -2,7 +2,7 @@ function getCookie(name) {
 	let matches = document.cookie.match(new RegExp(
 		"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
 	));
-	return matches ? decodeURIComponent(matches[1]) : undefined;
+	return matches ? decodeURIComponent(matches[1]) : 0;
 }
 function requestData(dataArr) {
 	let i = "";
@@ -73,4 +73,43 @@ function convertCanvasToImage(canvas, w, h) {
 	let image = new Image(w,h);
 	image.src = canvas.toDataURL("image/png");
 	return image;
+}
+
+function createUuid(){
+	let dt = new Date().getTime();
+	let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		let r = (dt + Math.random()*16)%16 | 0;
+		dt = Math.floor(dt/16);
+		return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+	});
+	return uuid;
+}
+
+function createNotification(enter, type)
+{
+	let	notification;
+	let button;
+	let hero;
+
+	hero = document.querySelector(".body-e");
+	button = document.createElement("button");
+	button.classList.add("delete");
+	notification = document.createElement("div");
+	notification.classList.add("notification");
+	notification.id = createUuid();
+	button.dataset.div_id = notification.id;
+	notification.innerHTML = enter;
+	button.onclick = deleteNotification;
+	notification.appendChild(button);
+	if (type === 1)
+		notification.classList.add("is-success");
+	else if (type === 2)
+		notification.classList.add("is-warning");
+	else if (type === 3)
+		notification.classList.add("is-danger");
+	hero.insertBefore(notification, hero.firstChild);
+}
+
+function deleteNotification() {
+	document.getElementById(this.dataset.div_id).remove();
 }

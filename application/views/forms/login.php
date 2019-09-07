@@ -29,12 +29,9 @@
 		</div>
 	</nav>
 	<div class="hero-body">
-		<div class="container">
+		<div class="container body-e">
 			<div class="columns is-5-tablet is-4-desktop is-3-widescreen">
 				<div class="column">
-					<div class="notification is-warning" id="user-not-found" style="display: none; width: 200px">
-						User not found<button id="user-not-found" class="delete" onclick="hideNotification('user-not-found')"></button>
-					</div>
 					<form class="box" onsubmit="return false">
 						<div class="field">
 							<label class="label">Login</label>

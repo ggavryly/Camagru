@@ -23,6 +23,7 @@ function like() {
 	xhttp.send(requestData(like));
 	xhttp.onload = function () {
 		try {
+			console.log("kek");
 			let response = JSON.parse(xhttp.responseText);
 			if (response === 1)
 			{
@@ -151,7 +152,6 @@ function uploadPosts(needle, id ,post)
 
 function addComment() {
 	let comment = document.querySelector("#textarea").value;
-
 	let data = {
 		"id_post" : document.querySelector("#comment_button").dataset.id_post,
 		"comment" : comment,
@@ -162,6 +162,7 @@ function addComment() {
 	xhttp.open("post", "../../core/new-comment.php", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send(requestData(data));
+	uploadPost(needle);
 }
 
 function uploadPost() {
@@ -180,23 +181,9 @@ function uploadPost() {
 function createViewPost(data, post) {
 	let box, p_box, title, x, remove;
 
-	remove = document.querySelector("#comments").children;
-	if (data[0]["id_post"] === comn["curr"])
-	{
-		return 0;
-	}
-	else if (data[0]["id_post"] !== comn["curr"])
-	{
-		if (comn["first"])
-		{
-			console.log("remove");
-			let p_com = document.querySelector("#comments");
-			p_com.innerHTML = "<h5 class=\"title is-5\" style=\"color:black\">Comments</h5>"
-		}
-
-		comn["first"] = 1;
-	}
-	comn["curr"] = data[0]["id_post"];
+	let p_com = document.querySelector("#comments");
+	p_com.innerHTML = "<h5 class=\"title is-5\" style=\"color:black\">Comments</h5>";
+	console.log("-------------");
 	document.querySelector("#comment_img").src = post;
 	p_box = document.querySelector("#comments");
 	for (let i in data)
@@ -242,8 +229,30 @@ function createViewPost(data, post) {
 	}
 }
 
+function deletePost() {
+	let id;
+
+	let http = new XMLHttpRequest();
+	let data = {
+		"id_user" : getCookie("id_user"),
+		"login" : getCookie("login"),
+		"id_post" : this.dataset.id_post
+	};
+	id = this.dataset.id_box;
+	http.open("post", "../../core/delete_post.php", true);
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	http.send(requestData(data));
+	http.onload = function () {
+		let answer = JSON.parse(http.responseText);
+		if (answer.response === 1)
+			document.getElementById(id).remove();
+		else
+			return 0;
+	};
+}
+
 function createPost(nick, post, id, id_post) {
-	let box, title, figure, img, span, i, button, img_2;
+	let box, title, figure, img, span, i, button, img_2, delet;
 
 	box = document.createElement("box");
 	title = document.createElement("h5");
@@ -252,12 +261,20 @@ function createPost(nick, post, id, id_post) {
 	span = document.createElement("span");
 	img_2 = document.createElement("img");
 	button = document.createElement("button");
+	delet = document.createElement("a");
 
+	delet.classList.add("delete");
+	delet.style.float = "right";
+	delet.onclick = deletePost;
 	box.classList.add("box");
+	box.id = createUuid();
+	delet.dataset.id_box = box.id;
+	delet.dataset.id_post = id_post;
 	title.classList.add("title");
 	title.classList.add("is-5");
 	title.style.color = "#000000";
 	title.innerText = getNickname(nick);
+	title.style.display = "inline";
 	figure.classList.add("image");
 	figure.classList.add("is-square");
 	button.classList.add("button");
@@ -280,6 +297,7 @@ function createPost(nick, post, id, id_post) {
 	img_2.classList.add("is-24x24");
 	img_2.src = "../../../public/styles/style-images/like-0.png";
 	box.appendChild(title);
+	box.appendChild(delet);
 	figure.appendChild(img);
 	box.appendChild(figure);
 	box.appendChild(button);

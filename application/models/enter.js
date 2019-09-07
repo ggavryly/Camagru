@@ -15,9 +15,12 @@ function ajax (url,method,functionName, dataArray) {
 				document.cookie = "id_user = " + escape(response["id_user"])+"; " + "expires=" + now.toUTCString() + ";";
 				document.location.href = "photo-booth.php";
 			}
-			else if (response["response"] === 2 || response["response"] === 0)
+			else if (response["response"] === 4 || response["response"] === 0)
 			{
-				notification(response);
+				if (response["response"] === 4)
+					createNotification("Please verify your email address", 2);
+				else if (response["response"] === 0)
+					createNotification("No user with this login", 3);
 			}
 		}
 		catch (e) {
@@ -78,16 +81,16 @@ function	signUp() {
 				{
 					if (response === 2)
 					{
-						document.querySelector("#login-already").style.display = "";
+						createNotification("User with login already exist", 2);
 					}
 					else if (response === 3)
 					{
-						document.querySelector("#email-already").style.display = "";
+						createNotification("User with email already exist", 2);
 					}
 				}
 			}
 			catch (e) {
-				notification("NO DATABASE");
+				createNotification("Database Error");
 			}
 			finally {
 
@@ -98,13 +101,9 @@ function	signUp() {
 	else
 	{
 		if (validatePassword(pass) !== 1)
-		{
-			notification(validatePassword(pass));
-		}
+			createNotification(validatePassword(pass), 2);
 		else
-		{
-			notification(validateEmail(email));
-		}
+			createNotification(validateEmail(email), 2);
 	}
 	return true;
 }
@@ -140,9 +139,9 @@ function resetPassword() {
 		try {
 			let response = JSON.parse(xhttp.responseText);
 			if (response === 0) {
-				document.querySelector("#no-email").style.display = "";
+				createNotification("No user with these email", 2);
 			} else if (response === 1) {
-				document.querySelector("#success-email").style.display = "";
+				createNotification("Recover letter was sen to your email", 1);
 			}
 
 		} catch (e) {
@@ -182,9 +181,4 @@ function new_pass() {
 
 		}
 	};
-}
-
-function notification(response) {
-	document.querySelector("#you-sign-up").style.display = "";
-	document.querySelector("#you-sign-up").innerHTML = response + "<button  onclick=\"hideNotification('you-sign-up')\" class=\"delete\"></button>";
 }

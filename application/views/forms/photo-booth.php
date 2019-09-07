@@ -63,10 +63,10 @@
 						<figure class="image picture ">
 							<img id="photo" src="../../../public/styles/style-images/no-photo.png">
 						</figure>
-						<div class="file">
+						<div class="file" style="padding-left: 30%">
 							<label class="file-label" style="" id="id_test">
-								<input id="choose_file" class="file-input" type="file" name="resume" value="kopa">
-								<span class="file-cta">
+								<input id="choose_file" class="file-input" type="file" name="resume" onchange="chooseFile();">
+								<span class="file-cta" style="position: relative; ">
 									<span class="file-icon">
 										<i class="fas fa-upload"></i>
 									</span>
@@ -92,7 +92,13 @@
     })
 </script>
 <script>
-	if (getCookie("login") === undefined)
+	function getCookie(name) {
+		let matches = document.cookie.match(new RegExp(
+			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+		));
+		return matches ? decodeURIComponent(matches[1]) : 0;
+	}
+	if (getCookie("login") === 0)
 	{
 		document.location.href = "login.php";
 	}
